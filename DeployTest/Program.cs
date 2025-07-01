@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -15,15 +18,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.Urls.Add("http://*:8080");
 
-app.UseHttpsRedirection();
+
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
